@@ -1557,6 +1557,31 @@ void CRoCodeBind::SearchRagexeMemory(void)
 		"e8*7******"        //   call    near F00579fc0
 		);
 
+	// 2017-09-20ragexe Ragexe.exe iRO RE:Start
+	CSearchCode UIYourItemWnd__SendMsg_REQ_WEAR_EQUIP_Handler_TypeG(
+		"b9*1******"               // mov ecx,ragexe.BB7468 ; CModeMgr g_modeMgr
+		"e8*2******"               // call ragexe.59A910 ; CModeMgr::GetGameMode
+		"b898090000"               // mov eax,998
+		"668945**"                 // mov word ptr ss:[ebp-30],ax
+		"668b86********"           // mov ax,word ptr ds:[esi+88]
+		"668945**"                 // mov word ptr ss:[ebp-2E],ax
+		"8b86********"             // mov eax,dword ptr ds:[esi+8C]
+		"8945**"                   // mov dword ptr ss:[ebp-2C],eax
+		"8d45**"                   // lea eax,dword ptr ss:[ebp-30]
+		"50"                       // push eax
+		"6898090000"               // push 998
+		"e8*3******"               // call ragexe.7CCAB0 ; CRagConnection::instanceR
+		"8bc8"                     // mov ecx,eax
+		"e8*4******"               // call ragexe.7CC080 ; CRagConnection::GetPacketSize
+		"50"                       // push eax
+		"e8********"               // call ragexe.7CCAB0 ; CRagConnection::instanceR
+		"8bc8"                     // mov ecx,eax
+		"e8*5******"               // call ragexe.7CC810 ; CRagConnection::SendPacket
+		"688a000000"               // push 8A
+		"b9*6******"               // mov ecx,ragexe.BE3578 ; UIWindowMgr g_windowMgr
+		"e8*7******"               // call ragexe.5654E0 ; UIWindowMgr::DeleteWindow
+		);
+
 	CSearchCode Mov_ecx_adr_Call_near_adr(
 		"b9*1******"        //   mov     ecx, dword L009b74f8
 		"e8*2******"        //   call    near F005ac940
@@ -1584,6 +1609,14 @@ void CRoCodeBind::SearchRagexeMemory(void)
 		"56"				// push    esi
 		"6800070000"		// push    dword 000000700h
 		"50"				// push    eax
+		);
+	CSearchCode CMouse_Init_vc11(
+		"56"                           // push esi
+		"6a00"                         // push 0 ; punkOuter
+		"8bf1"                         // mov esi,ecx
+		"56"                           // push esi ; ppDI
+		"6800070000"                   // push 700 ; dwVersion
+		"ff35********"                 // push dword ptr ds:[D44B50] ; hinst
 		);
 	CSearchCode winmain_init_CMouse_Init_call(
 		"b9*1******"		// mov     ecx,g_mouse
@@ -1863,7 +1896,23 @@ void CRoCodeBind::SearchRagexeMemory(void)
 				DEBUG_LOGGING_NORMAL(("TypeF CRagConnection::GetPacketSize = %08X", m_functionRagexe_CRagConnection__GetPacketSize));
 				break;
 			}
+			else
+			if (UIYourItemWnd__SendMsg_REQ_WEAR_EQUIP_Handler_TypeG.PatternMatcher(&pBase[ii]))
+			{
+				m_functionRagexe_CRagConnection__instanceR =
+					(tCRagConnection__instanceR)UIYourItemWnd__SendMsg_REQ_WEAR_EQUIP_Handler_TypeG
+					.Get4BIndexDWORD(&pBase[ii], '3');
+				m_functionRagexe_CRagConnection__GetPacketSize =
+					(tCRagConnection__GetPacketSize)UIYourItemWnd__SendMsg_REQ_WEAR_EQUIP_Handler_TypeG
+					.Get4BIndexDWORD(&pBase[ii], '4');
+				g_pmodeMgr = (CModeMgr*)UIYourItemWnd__SendMsg_REQ_WEAR_EQUIP_Handler_TypeG
+					.GetImmediateDWORD(&pBase[ii], '1');
+				DEBUG_LOGGING_NORMAL(("TypeG CRagConnection::instanceR = %08X", m_functionRagexe_CRagConnection__instanceR));
+				DEBUG_LOGGING_NORMAL(("TypeG CRagConnection::GetPacketSize = %08X", m_functionRagexe_CRagConnection__GetPacketSize));
+				break;
+			}
 		} 
+#if 0
 		if (m_functionRagexe_CRagConnection__instanceR && m_functionRagexe_CRagConnection__GetPacketSize){
 			// get packet length for classic client.
 			m_functionRagexe_CRagConnection__instanceR();
@@ -1882,15 +1931,17 @@ void CRoCodeBind::SearchRagexeMemory(void)
 				}
 			}
 		}
-
+#endif
 
 
 		// get CMouse instance
+		// TODO: vc11 signature has different size - adjust search range
 		for( UINT ii = 0; ii < mbi.RegionSize - CMouse_Init_vc6.GetSize() ; ii++ )
 		{
 			LPBYTE pBase = (LPBYTE)mbi.BaseAddress;
-			if( CMouse_Init_vc6.PatternMatcher( &pBase[ii] )
-			 || CMouse_Init_vc9.PatternMatcher( &pBase[ii] )
+			if (CMouse_Init_vc6.PatternMatcher(&pBase[ii])
+				|| CMouse_Init_vc9.PatternMatcher(&pBase[ii])
+				|| CMouse_Init_vc11.PatternMatcher(&pBase[ii])
 				)
 			{
 				ptr_CMouse_Init = (DWORD)( &pBase[ii] );

@@ -1,8 +1,8 @@
-This is **SimpleROHook updated to work with 2017-09-20ragexe from iRO RE:Start**. It *may* also support current Renewal clients from other servers.
+This is **SimpleROHook updated to work with 2017-09-20ragexe from iRO RE:Start**. It *may* also support current (Renewal?) clients from other servers.
 
 I have only tested the Bowling Bash gutterline functionality; judging by the logging console, some other stuff is definitely still wrong.
 
-This fork also updates the project to Visual Studio 2015 (+ runtime), because I don't have earlier versions installed.
+This fork also updates the project to Visual Studio 2015 (+ runtime), because I don't have earlier versions installed. Thus, you will need the [Visual C++ 2015 Redistributable](https://www.microsoft.com/en-us/download/details.aspx?id=53587) (32-bit version, `vc_redist.x86.exe`, even with 64-bit Windows) to use this.
 
 ### Build instructions
 

@@ -5,3 +5,5 @@ obj
 *.opensdf
 *.sdf
 *.suo
+*.opendb
+*.vcxproj.user

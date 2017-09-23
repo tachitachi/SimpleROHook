@@ -20,6 +20,17 @@ I did the minimum work necessary to make Bowling Bash gutterline display work on
 
 As far as I'm aware, iRO's GM team tolerates gutterline display client edits, but keep in mind that client edits are generally at least a gray area. Use this tool at your own responsibility.
 
+### Usage
+
+* Run SimpleROHookCS.exe
+  * Only clients started *after* SimpleROHook will be affected. You'll get a logging console for previously started ones, but no actual functionality.
+* Right click the SimpleROHook icon in the system tray.
+* Uncheck *Window* > *NPC Logger* as it's useless.
+* Check *3D Map Grid* > *Show BBE* to show gutterlines.
+* The display is a little glitchy on uneven terrain. Adjusting *3D Map Grid* > *Ground Z Bias* can help.
+* *3D Map Grid* > *Alpha Level* controls the opacity of the gutterline overlay.
+* Feel free to close the console window that pops up when you run a client.
+
 ### Original README
 
     SimpleROHook

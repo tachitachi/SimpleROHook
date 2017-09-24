@@ -816,6 +816,8 @@ void CRoCodeBind::DrawSRHDebug(IDirect3DDevice7* d3ddevice)
 				{
 					CSkill *pSkill = *it;
 					if (pSkill){
+						putinfostr << "SKILL INFO" << std::endl;
+						putinfostr << "m_job = " << std::hex << pSkill->m_job << std::endl;
 						putinfostr << "m_ownerGid = " << std::hex << pSkill->m_ownerGid << std::endl;
 						putinfostr << "m_launchCnt = " << pSkill->m_launchCnt << std::endl;
 						putinfostr << "m_aid = " << pSkill->m_aid << std::endl;

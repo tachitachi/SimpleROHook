@@ -4,6 +4,12 @@ I have only tested the Bowling Bash gutterline and M2E functionality; judging by
 
 This fork also updates the project to Visual Studio 2015 (+ runtime), because I don't have earlier versions installed. Thus, you will need the [Visual C++ 2015 Redistributable](https://www.microsoft.com/en-us/download/details.aspx?id=53587) (32-bit version, `vc_redist.x86.exe`, even with 64-bit Windows) to use this.
 
+Special thanks to [@phaicm](https://github.com/phaicm) for the default M2E configuration and [@Toxetic](https://github.com/Toxetic) for providing trusted binaries!
+
+### Download
+
+I asked better known players to provide binary releases, and iRO Wiki forum moderator Toxn has helpfully stepped up. You can find them [in this thread](http://forums.irowiki.org/viewtopic.php?f=8&t=38).
+
 ### Build instructions
 
 * Install the [August 2007 DirectX SDK](https://www.microsoft.com/en-us/download/details.aspx?id=13287). Other versions **will not work**.

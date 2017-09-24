@@ -562,6 +562,11 @@ public:
 #ifndef JRO_CLIENT_STRUCTURE
 	unsigned long m_gid;
 #endif
+#ifdef CGAMEACTOR_PADDING_8
+	// As with CMode, I don't know where these 8 extra bytes come from
+	// but putting them here fixes M2E
+	char m_pad1[8];
+#endif
 	int m_job;
 	int m_sex;
 	void* m_balloon;//class UIBalloonText* m_balloon;

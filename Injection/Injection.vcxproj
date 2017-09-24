@@ -164,9 +164,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Core\FastFont\CacheInfo.h" />
     <ClInclude Include="Core\PerformanceCounter.h" />
     <ClInclude Include="Core\ro\packet.h" />

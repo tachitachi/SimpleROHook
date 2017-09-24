@@ -36,9 +36,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Core\ro\mouse.h">
       <Filter>ヘッダー ファイル\Core\ro</Filter>
     </ClInclude>

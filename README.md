@@ -1,6 +1,6 @@
 This is **SimpleROHook updated to work with 2017-09-20ragexe from iRO RE:Start**. It *may* also support current (Renewal?) clients from other servers.
 
-I have only tested the Bowling Bash gutterline functionality; judging by the logging console, some other stuff is definitely still wrong.
+I have only tested the Bowling Bash gutterline and M2E functionality; judging by the logging console, some other stuff is definitely still wrong.
 
 This fork also updates the project to Visual Studio 2015 (+ runtime), because I don't have earlier versions installed. Thus, you will need the [Visual C++ 2015 Redistributable](https://www.microsoft.com/en-us/download/details.aspx?id=53587) (32-bit version, `vc_redist.x86.exe`, even with 64-bit Windows) to use this.
 
@@ -18,7 +18,7 @@ This fork also updates the project to Visual Studio 2015 (+ runtime), because I 
 
 I did the minimum work necessary to make Bowling Bash gutterline display work on the client mentioned above, with only a few minutes of testing. If this ends up crashing your client, I'd appreciate a heads up, but don't yell at me if that loses you an MvP or something.
 
-As far as I'm aware, iRO's GM team tolerates gutterline display client edits, but keep in mind that client edits are generally at least a gray area. Use this tool at your own responsibility.
+As far as I'm aware, iRO's GM team tolerates gutterline display client edits, but keep in mind that client edits are generally at least a gray area. Use this tool at your own responsibility. I also have no idea how they feel about *M2E*.
 
 ### Usage
 
@@ -30,6 +30,14 @@ As far as I'm aware, iRO's GM team tolerates gutterline display client edits, bu
 * The display is a little glitchy on uneven terrain. Adjusting *3D Map Grid* > *Ground Z Bias* can help.
 * *3D Map Grid* > *Alpha Level* controls the opacity of the gutterline overlay.
 * Feel free to close the console window that pops up when you run a client.
+
+#### Ground skill effect display (M2E)
+
+* Check *3D Map Grid* > *Show M2E* to mark cells currently affected by ground targeting skills (Storm Gust etc.).
+* You can edit `config.ini` to set colors for specific skills.
+* To find the ID of a certain skill, toggle *Debug Information* > *Show Object Information* and (have someone) cast it.
+  * Besides a bunch of other crap, you will see a `SKILL INFO` section on the game screen for each affected cell. The value of `m_job` is the cell ID.
+  * For example, if you cast a vertical or horizontal *Fire Wall*, you will see three `SKILL INFO` sections with `m_job = 7f`. `7f` is your skill ID, so you would change the `Skill007F` line in `config.ini` to change its color (or add one if you've previously removed it).
 
 ### Original README
 

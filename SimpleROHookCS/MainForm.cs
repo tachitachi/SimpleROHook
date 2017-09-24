@@ -257,51 +257,407 @@ namespace SimpleROHookCS
             {
                 using( StreamWriter w = new StreamWriter(@"config.ini") )
                 {
-                    w.WriteLine("[M2E]");
-                    w.WriteLine("; MiniMiniEffect Color Setting");
-                    w.WriteLine("; 0xAARRGGBB");
-                    w.WriteLine("; AA:alpha  00-FF (00:0%---7F:50%---FF:100%)");
-                    w.WriteLine("; RR:red    00-FF (0-255)");
-                    w.WriteLine("; GG:green  00-FF (0-255)");
-                    w.WriteLine("; BB:blue   00-FF (0-255)");
-                    w.WriteLine("; ");
-                    w.WriteLine(";SW");
-                    w.WriteLine("Skill007E=0x7F008888");
-                    w.WriteLine(";FW");
-                    w.WriteLine("Skill007F=0x7F880000");
-                    w.WriteLine(";");
-                    w.WriteLine(";warp portal");
-                    w.WriteLine("Skill0080=0x7FFFFFFF");
-                    w.WriteLine("Skill0081=0x7FFFFFFF");
-                    w.WriteLine(";b.s. sacramentl");
-                    w.WriteLine("Skill0082=0x7F888888");
-                    w.WriteLine(";sanctuary");
-                    w.WriteLine("Skill0083=0x7F00FFFF");
-                    w.WriteLine(";ME");
-                    w.WriteLine("Skill0084=0x7F00FFFF");
-                    w.WriteLine(";pneuma");
-                    w.WriteLine("Skill0085=0x7F00FFFF");
-                    w.WriteLine(";SG LOV etc.");
-                    w.WriteLine("Skill0086=0x7F880088");
-                    w.WriteLine(";FP");
-                    w.WriteLine("Skill0087=0x7F888800");
-                    w.WriteLine("Skill0088=0x7F888800");
-                    w.WriteLine(";");
-                    w.WriteLine("Skill0089=0x7F888888");
-                    w.WriteLine("Skill008A=0x7F888888");
-                    w.WriteLine("Skill008B=0x7F888888");
-                    w.WriteLine("Skill008C=0x7F888888");
-                    w.WriteLine(";IW");
-                    w.WriteLine("Skill008D=0x7F880088");
-                    w.WriteLine(";QM");
-                    w.WriteLine("Skill008E=0x7F448844");
-                    w.WriteLine(";");
-                    w.WriteLine("Skill008F=0x7F888888");
-                    w.WriteLine(";");
-                    for (int ii = 0x90; ii < 0x100; ii++)
-                    {
-                        w.WriteLine("Skill{0}=0x7F888888", ii.ToString("X4"));
-                    }
+                    #region config.ini
+                    w.WriteLine(@"
+[M2E]
+; MiniMiniEffect Color Setting
+; 0xAARRGGBB
+; AA:alpha  00-FF (00:0% (invisible) ---7F:50% (half transparency) ---FF:100% (solid color)
+; RR:red    00-FF (0-255)
+; GG:green  00-FF (0-255)
+; BB:blue   00-FF (0-255)
+; 
+; Skills with a * are Renewal Skills
+; GD_XXXXX represents guild skills
+; WE_XXXXX represents wedding skills
+; NPC_XXXX represents NPC / monsters exclusive skills
+;
+; Legend:  SkillIDNumber (Hex) = Color
+
+;NC_MAGMA_ERUPTION*
+;RL_B_TRAP*
+Skill0010=0x00000000
+
+;MG_SAFETYWALL
+;MH_STEINWAND*
+;SO_ELEMENTAL_SHIELD*
+Skill007E=0x7FF34AFF
+
+;MG_FIREWALL
+Skill007F=0x00000000
+
+;AL_WARP
+Skill0080=0x7FFFFFFF
+Skill0081=0x7FFFFFFF
+
+;PR_SANCTUARY
+Skill0083=0x00000000
+
+;PR_MAGNUS
+Skill0084=0x00000000
+
+;AL_PNEUMA (only center cell, the outer 3x3 cells uses 86's color definition)
+Skill0085=0x7F99FF33
+
+
+;This next one has so many skills associated to this ID is because it contains
+;splash AoE effects which uses another ID to define the splash. Its on my TODO 
+;to separate these if possible.
+;AC_SHOWER
+;CR_GRANDCROSS
+;GN_CRAZYWEED_ATK*
+;GS_DESPERADO
+;KO_BAKURETSU*
+;KO_HUUMARANKA*
+;KO_MUCHANAGE*
+;MA_SHOWER*
+;MG_THUNDERSTORM
+;MH_XENO_SLASHER*
+;NJ_HUUMA
+;NJ_RAIGEKISAI
+;NPC_DARKGRANDCROSS
+;SG_MOON_WARM
+;SG_STAR_WARM
+;SG_SUN_WARM
+;SO_DIAMONDDUST*
+;SO_EARTHGRAVE*
+;WL_COMET*
+;WZ_HEAVENDRIVE
+;WZ_METEOR
+;WZ_STORMGUST
+;WZ_VERMILION
+Skill0086=0x7F6912FF
+
+;WZ_FIREPILLAR
+Skill0087=0x7F888800
+Skill0088=0x7F888800
+
+;WZ_ICEWALL
+Skill008D=0x7F0DFFEF
+
+;WZ_QUAGMIRE
+Skill008E=0x7F0EAD68
+
+;HT_BLASTMINE
+Skill008F=0x00000000
+
+;HT_SKIDTRAP
+;MA_SKIDTRAP
+Skill0090=0x00000000
+
+;HT_ANKLESNARE
+Skill0091=0x00000000
+
+;AS_VENOMDUST
+Skill0092=0x00000000
+
+;HT_LANDMINE
+;MA_LANDMINE
+Skill0093=0x00000000
+
+;HT_SHOCKWAVE
+Skill0094=0x00000000
+
+;HT_SANDMAN
+;MA_SANDMAN
+Skill0095=0x00000000
+
+;HT_FLASHER
+Skill0096=0x00000000
+
+;HT_FREEZINGTRAP
+;MA_FREEZINGTRAP
+Skill0097=0x00000000
+
+;HT_CLAYMORETRAP
+Skill0098=0x00000000
+
+;HT_TALKIEBOX
+Skill0099=0x00000000
+
+;SA_VOLCANO
+Skill009A=0x00000000
+
+;SA_DELUGE
+Skill009B=0x00000000
+
+;SA_VIOLENTGALE
+Skill009C=0x00000000
+
+;SA_LANDPROTECTOR
+Skill009D=0xFF969696
+
+;BD_LULLABY
+Skill009E=0x00000000
+
+;BD_RICHMANKIM
+Skill009F=0x00000000
+
+;BD_ETERNALCHAOS
+Skill00A0=0x00000000
+
+;BD_DRUMBATTLEFIELD
+Skill00A1=0x00000000
+
+;BD_RINGNIBELUNGEN
+Skill00A2=0x00000000
+
+;BD_ROKISWEIL
+Skill00A3=0x00000000
+
+;BD_INTOABYSS
+Skill00A4=0x00000000
+
+;BD_SIEGFRIED
+Skill00A5=0x00000000
+
+;BA_DISSONANCE
+Skill00A6=0x00000000
+
+;BA_WHISTLE
+Skill00A7=0x00000000
+
+;BA_ASSASSINCROSS
+Skill00A8=0x2F660F12
+
+;BA_POEMBRAGI
+Skill00A9=0x2F171FFF
+
+;BA_APPLEIDUN
+Skill00AA=0x2FD8DE2A
+
+;DC_UGLYDANCE
+Skill00AB=0x00000000
+
+;DC_HUMMING
+Skill00AC=0x00000000
+
+;DC_DONTFORGETME
+Skill00AD=0xCF00CF00
+
+;DC_FORTUNEKISS
+Skill00AE=0x00000000
+
+;DC_SERVICEFORYOU
+Skill00AF=0x2F8C27AB
+
+;RG_GRAFFITI
+Skill00B0=0x00000000
+
+;AM_DEMONSTRATION
+Skill00B1=0x00000000
+;WE_CALLBABY
+Skill00B2=0x00000000
+
+;WE_CALLPARENT
+Skill00B2=0x00000000
+
+;WE_CALLPARTNER
+Skill00B2=0x00000000
+
+;PA_GOSPEL
+Skill00B3=0x00000000
+
+;HP_BASILICA
+Skill00B4=0x00000000
+
+;CG_MOONLIT
+Skill00B5=0x00000000
+
+;PF_FOGWALL
+Skill00B6=0x7FA87928
+
+;PF_SPIDERWEB
+Skill00B7=0x00000000
+
+;HW_GRAVITATION
+Skill00B8=0x00000000
+
+;CG_HERMODE
+Skill00B9=0x00000000
+
+;NJ_SUITON
+Skill00BB=0x00000000
+
+;NJ_TATAMIGAESHI
+Skill00BC=0x00000000
+
+;NJ_KAENSIN
+Skill00BD=0x00000000
+
+;GS_GROUNDDRIFT
+Skill00BE=0x00000000
+
+;GD_LEADERSHIP 
+Skill00C1=0x00000000
+
+;GD_GLORYWOUNDS 
+Skill00C2=0x00000000
+
+;GD_SOULCOLD 
+Skill00C3=0x00000000
+
+;GD_HAWKEYES 
+Skill00C4=0x00000000
+
+;NPC_EARTHQUAKE
+Skill00C6=0x00000000
+
+;NPC_EVILLAND
+Skill00C7=0x7F4F5CB3
+
+;AB_EPICLESIS*
+Skill00CA=0x00000000
+
+;WL_EARTHSTRAIN*
+Skill00CB=0x00000000
+
+;SC_MANHOLE*
+Skill00CC=0x00000000
+
+;SC_DIMENSIONDOOR*
+Skill00CD=0x00000000
+
+;SC_CHAOSPANIC*
+Skill00CE=0x00000000
+
+;SC_MAELSTROM*
+Skill00CF=0x00000000
+
+;SC_BLOODYLUST*
+Skill00D0=0x00000000
+
+;SC_FEINTBOMB*
+Skill00D1=0x00000000
+
+;RA_MAGENTATRAP*
+Skill00D2=0x00000000
+
+;RA_COBALTTRAP*
+Skill00D3=0x00000000
+
+;RA_MAIZETRAP*
+Skill00D4=0x00000000
+
+;RA_VERDURETRAP*
+Skill00D5=0x00000000
+
+;RA_FIRINGTRAP*
+Skill00D6=0x00000000
+
+;RA_ICEBOUNDTRAP*
+Skill00D7=0x00000000
+
+;RA_ELECTRICSHOCKER*
+Skill00D8=0x00000000
+
+;RA_CLUSTERBOMB*
+Skill00D9=0x00000000
+
+;WM_REVERBERATION*
+Skill00DA=0x00000000
+
+;WM_SEVERE_RAINSTORM*
+Skill00DB=0x00000000
+
+;SO_FIREWALK*
+Skill00DC=0x00000000
+
+;SO_ELECTRICWALK*
+Skill00DD=0x00000000
+
+;WM_POEMOFNETHERWORLD*
+Skill00DE=0x00000000
+
+;SO_PSYCHIC_WAVE*
+Skill00DF=0x00000000
+
+;SO_CLOUD_KILL*
+Skill00E0=0x00000000
+
+;GC_POISONSMOKE*
+Skill00E1=0x00000000
+
+;NC_NEUTRALBARRIER*
+Skill00E2=0x00000000
+
+;NC_STEALTHFIELD*
+Skill00E3=0x00000000
+
+;SO_WARMER*
+Skill00E4=0x00000000
+
+;GN_THORNS_TRAP*
+Skill00E5=0x00000000
+
+;GN_WALLOFTHORN*
+Skill00E6=0x00000000
+
+;GN_DEMONIC_FIRE*
+Skill00E7=0x00000000
+
+;GN_FIRE_EXPANSION_SMOKE_POWDER*
+Skill00E8=0x00000000
+
+;GN_FIRE_EXPANSION_TEAR_GAS*
+Skill00E9=0x00000000
+
+;GN_HELLS_PLANT*
+Skill00EA=0x00000000
+
+;SO_VACUUM_EXTREME*
+Skill00EB=0x00000000
+
+;LG_BANDING*
+Skill00EC=0x00000000
+
+;EL_FIRE_MANTLE*
+Skill00ED=0x00000000
+
+;EL_WATER_BARRIER*
+Skill00EE=0x00000000
+
+;EL_ZEPHYR*
+Skill00EF=0x00000000
+
+;EL_POWER_OF_GAIA*
+Skill00F0=0x00000000
+
+;SO_FIRE_INSIGNIA*
+Skill00F1=0x00000000
+
+;SO_WATER_INSIGNIA*
+Skill00F2=0x00000000
+
+;SO_WIND_INSIGNIA*
+Skill00F3=0x00000000
+
+;SO_EARTH_INSIGNIA*
+Skill00F4=0x00000000
+
+;MH_POISON_MIST*
+Skill00F5=0x00000000
+
+;MH_LAVA_SLIDE*
+Skill00F6=0x00000000
+
+;MH_VOLCANIC_ASH*
+Skill00F7=0x00000000
+
+;KO_ZENKAI*
+Skill00F8=0x00000000
+
+;KO_MAKIBISHI*
+Skill00FC=0x00000000
+
+;NPC_VENOMFOG
+Skill00FD=0x00000000
+
+;SC_ESCAPE*
+Skill00FE=0x00000000
+
+");
+                    #endregion
                 }
             }
 

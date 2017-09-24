@@ -18,7 +18,7 @@ This fork also updates the project to Visual Studio 2015 (+ runtime), because I 
 
 I did the minimum work necessary to make Bowling Bash gutterline display work on the client mentioned above, with only a few minutes of testing. If this ends up crashing your client, I'd appreciate a heads up, but don't yell at me if that loses you an MvP or something.
 
-As far as I'm aware, iRO's GM team tolerates gutterline display client edits, but keep in mind that client edits are generally at least a gray area. Use this tool at your own responsibility. I also have no idea how they feel about *M2E*.
+As of September 24, 2017, iRO's GM team [appears to tolerate gutterline and ground skill target display client edits](https://forums.warpportal.com/index.php?/topic/202141-ro1-in-game-rules-and-guidelines/). Keep in mind they may change their stance at any time and this doesn't necessarily apply to other servers. Whatever you do, use this tool at your own responsibility.
 
 ### Usage
 
@@ -35,9 +35,7 @@ As far as I'm aware, iRO's GM team tolerates gutterline display client edits, bu
 
 * Check *3D Map Grid* > *Show M2E* to mark cells currently affected by ground targeting skills (Storm Gust etc.).
 * You can edit `config.ini` to set colors for specific skills.
-* To find the ID of a certain skill, toggle *Debug Information* > *Show Object Information* and (have someone) cast it.
-  * Besides a bunch of other crap, you will see a `SKILL INFO` section on the game screen for each affected cell. The value of `m_job` is the cell ID.
-  * For example, if you cast a vertical or horizontal *Fire Wall*, you will see three `SKILL INFO` sections with `m_job = 7f`. `7f` is your skill ID, so you would change the `Skill007F` line in `config.ini` to change its color (or add one if you've previously removed it).
+  * Note the default configuration has many skills set to invisible.
 
 ### Original README
 

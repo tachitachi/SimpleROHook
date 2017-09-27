@@ -331,7 +331,7 @@ void vector3d::MatrixMult(struct vector3d& v, struct matrix& m)
 // CRenderer::ProjectVertex
 void CRoCodeBind::ProjectVertex(vector3d& src,matrix& vtm,float *x,float *y,float *oow)
 {
-	if( !g_renderer && !*g_renderer )return;
+	if( !g_renderer || !*g_renderer )return;
 
 	vector3d viewvect;
 	viewvect.MatrixMult( src , vtm );
@@ -346,7 +346,7 @@ void CRoCodeBind::ProjectVertex(vector3d& src,matrix& vtm,float *x,float *y,floa
 // CRenderer::ProjectVertex
 void CRoCodeBind::ProjectVertex(vector3d& src,matrix& vtm,tlvertex3d *vert)
 {
-	if( !g_renderer && !*g_renderer )return;
+	if( !g_renderer || !*g_renderer )return;
 
 	vector3d viewvect;
 	viewvect.MatrixMult( src , vtm );
@@ -363,7 +363,7 @@ void CRoCodeBind::ProjectVertex(vector3d& src,matrix& vtm,tlvertex3d *vert)
 // to move pointvector on camera view
 void CRoCodeBind::ProjectVertexEx(vector3d& src, vector3d& pointvector, matrix& vtm, float *x, float *y, float *oow)
 {
-	if (!g_renderer && !*g_renderer)return;
+	if (!g_renderer || !*g_renderer)return;
 
 	vector3d viewvect;
 	viewvect.MatrixMult(src, vtm);
@@ -378,7 +378,7 @@ void CRoCodeBind::ProjectVertexEx(vector3d& src, vector3d& pointvector, matrix& 
 
 void CRoCodeBind::ProjectVertexEx(vector3d& src,vector3d& pointvector, matrix& vtm, tlvertex3d *vert)
 {
-	if (!g_renderer && !*g_renderer)return;
+	if (!g_renderer || !*g_renderer)return;
 
 	vector3d viewvect;
 	viewvect.MatrixMult(src, vtm);

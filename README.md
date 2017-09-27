@@ -1,4 +1,4 @@
-This is **SimpleROHook updated to work with 2017-09-20ragexe from iRO RE:Start**. It *may* also support current (Renewal?) clients from other servers.
+This is **SimpleROHook updated to work with 2017-09-27ragexe from iRO RE:Start**. It *may* also support current (Renewal?) clients from other servers.
 
 I have only tested the Bowling Bash gutterline and M2E functionality; judging by the logging console, some other stuff is definitely still wrong.
 

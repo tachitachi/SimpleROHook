@@ -1625,6 +1625,13 @@ void CRoCodeBind::SearchRagexeMemory(void)
 		"e8*2******"		// call    near CMouse__Init
 		"a1*3******"		// mov     eax, g_renderer__CRenderer
 		);
+	// 2017-09-27ragexe iRO RE:Start - does not use DirectInput
+	CSearchCode winmain_init_no_CMouse_Init_call(
+		"a1*1******"		// mov eax,dword ptr ds:[BE29E8] ; g_renderer__CRenderer
+		"b9********"		// mov ecx,ragexe.BE3658 ; g_windowMgr
+		"ff7028"			// push dword ptr ds:[eax+28]
+		"ff7024"			// push dword ptr ds:[eax+24]
+		);
 
 	CSearchCode funcPlayStrem_based_HighPrest_exe(
 		"55"                //   push    ebp
@@ -1968,6 +1975,20 @@ void CRoCodeBind::SearchRagexeMemory(void)
 						DEBUG_LOGGING_NORMAL( ("find *g_renderer = %08X",g_renderer) );
 						break;
 					}
+				}
+			}
+		}
+		else
+		{
+			for (int ii = mbi.RegionSize - winmain_init_no_CMouse_Init_call.GetSize(); ii >= 0; ii--)
+			{
+				LPBYTE pBase = (LPBYTE)mbi.BaseAddress;
+				if (winmain_init_no_CMouse_Init_call.PatternMatcher(&pBase[ii]))
+				{
+					DEBUG_LOGGING_NORMAL(("find init without CMouse::Init call : %08X", pBase + ii));
+					g_renderer = (CRenderer**)winmain_init_no_CMouse_Init_call.GetImmediateDWORD(&pBase[ii], '1');
+					DEBUG_LOGGING_NORMAL(("find *g_renderer = %08X", g_renderer));
+					break;
 				}
 			}
 		}

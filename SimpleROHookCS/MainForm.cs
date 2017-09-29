@@ -113,6 +113,8 @@ namespace SimpleROHookCS
                 = m_SharedData.objectinformation;
             kHzAudioModeonBootToolStripMenuItem.Checked
                 = m_SharedData._44khz_audiomode;
+            chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem.Checked
+                = m_SharedData.chainload;
 
             nPCLoggerToolStripMenuItem.Checked = m_npcLogger.Visible;
         }
@@ -697,6 +699,8 @@ Skill00FE=0x00000000
                         = configration._44khz_audiomode;
                     m_SharedData.cpucoolerlevel
                         = configration.cpucoolerlevel;
+                    m_SharedData.chainload
+                        = configration.chainload;
                 }
                 #endregion
             }
@@ -757,6 +761,8 @@ Skill00FE=0x00000000
                     = m_SharedData._44khz_audiomode;
                 configration.cpucoolerlevel
                     = m_SharedData.cpucoolerlevel;
+                configration.chainload
+                    = m_SharedData.chainload;
 
                 writer.Formatting = Formatting.Indented;
                 serializer.Serialize(writer, configration);
@@ -784,6 +790,11 @@ Skill00FE=0x00000000
             }
         }
 
+        private void chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var tsm = (ToolStripMenuItem)sender;
+            m_SharedData.chainload = tsm.Checked;
+        }
     }
 
     public class Config
@@ -803,6 +814,7 @@ Skill00FE=0x00000000
             objectinformation = false;
             _44khz_audiomode = false;
             cpucoolerlevel = 0;
+            chainload = true;
         }
 
         public bool write_packetlog { get; set; }
@@ -818,6 +830,7 @@ Skill00FE=0x00000000
         public bool objectinformation { get; set; }
         public bool _44khz_audiomode { get; set; }
         public int cpucoolerlevel { get; set; }
+        public bool chainload { get; set; }
 
         // without serialize
         [System.Xml.Serialization.XmlIgnoreAttribute]

@@ -268,24 +268,41 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 				_T("ws2_32.dll"), "recv",
 				ProxyWS2_32_recv, (LPVOID*)&OrigWS2_32_recv);
 #endif
+			if (g_pSharedData) {
+				::GetCurrentDirectory(MAX_PATH, temppath);
+				strcat_s(temppath, "\\BGM\\");
+
+				::MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED,
+					temppath, strlen(temppath) + 1,
+					g_pSharedData->musicfilename, MAX_PATH);
+				g_FreeMouseSw = g_pSharedData->freemouse;
+				if (g_pSharedData->_44khz_audiomode)
+					RagexeSoundRateFixer();
+
+				if (g_pSharedData->chainload)
+				{
+					char currentdir[MAX_PATH];
+					::GetCurrentDirectoryA(MAX_PATH, currentdir);
+					// LoadLibrary fails gracefully, so we just try to load both files
+					// if one doesn't exist, ignore it
+					if (!GetModuleHandle("dinput.dll"))
+					{
+						std::stringstream dinput_dll_path;
+						dinput_dll_path << currentdir << "\\dinput.dll";
+						::LoadLibraryA(dinput_dll_path.str().c_str());
+					}
+					std::stringstream dinput_asi_path;
+					dinput_asi_path << currentdir << "\\dinput.asi";
+					::LoadLibraryA(dinput_asi_path.str().c_str());
+				}
+			}
+
 			InstallProxyFunction(
 				_T("ddraw.dll"),  "DirectDrawCreateEx", 
 				ProxyDirectDrawCreateEx, (LPVOID*)&OrigDirectDrawCreateEx);
 			InstallProxyFunction(
 				_T("dinput.dll"), "DirectInputCreateA",
 				ProxyDirectInputCreateA, (LPVOID*)&OrigDirectInputCreateA);
-
-			if( g_pSharedData ){
-				::GetCurrentDirectory(MAX_PATH,temppath);
-				strcat_s( temppath,"\\BGM\\");
-
-				::MultiByteToWideChar(CP_ACP,MB_PRECOMPOSED,
-					temppath,strlen(temppath)+1,
-					g_pSharedData->musicfilename,MAX_PATH);
-				g_FreeMouseSw = g_pSharedData->freemouse;
-				if( g_pSharedData->_44khz_audiomode )
-					RagexeSoundRateFixer();
-			}
 
 		}
 		break;

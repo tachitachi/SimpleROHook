@@ -20,6 +20,7 @@ typedef struct _StSHAREDMEMORY{
 	BOOL	bbe;
 	BOOL	deadcell;
 	BOOL	chatscope;
+	BOOL	castrange;
 	BOOL	fix_windowmode_vsyncwait;
 	BOOL	show_framerate;
 	BOOL	objectinformation;

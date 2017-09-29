@@ -49,6 +49,7 @@
             this.showBBEtoolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showDeadCelltoolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showChatScopetoolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showCastRangetoolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groundZBiasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ground_zbias_ToolStripTrackBar = new SimpleROHookCS.ToolStripTrackBar();
             this.alphaLeveltoolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -194,6 +195,7 @@
             this.showBBEtoolStripMenuItem,
             this.showDeadCelltoolStripMenuItem,
             this.showChatScopetoolStripMenuItem,
+            this.showCastRangetoolStripMenuItem,
             this.groundZBiasToolStripMenuItem,
             this.ground_zbias_ToolStripTrackBar,
             this.alphaLeveltoolStripMenuItem,
@@ -233,6 +235,14 @@
             this.showChatScopetoolStripMenuItem.Size = new System.Drawing.Size(275, 22);
             this.showChatScopetoolStripMenuItem.Text = "Show Chat Scope";
             this.showChatScopetoolStripMenuItem.Click += new System.EventHandler(this.showChatScopetoolStripMenuItem_Click);
+            // 
+            // showCastRangetoolStripMenuItem
+            // 
+            this.showCastRangetoolStripMenuItem.CheckOnClick = true;
+            this.showCastRangetoolStripMenuItem.Name = "showCastRangetoolStripMenuItem";
+            this.showCastRangetoolStripMenuItem.Size = new System.Drawing.Size(275, 22);
+            this.showCastRangetoolStripMenuItem.Text = "Show Cast Range";
+            this.showCastRangetoolStripMenuItem.Click += new System.EventHandler(this.showCastRangetoolStripMenuItem_Click);
             // 
             // groundZBiasToolStripMenuItem
             // 
@@ -353,6 +363,7 @@
         private System.Windows.Forms.ToolStripMenuItem showBBEtoolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showDeadCelltoolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showChatScopetoolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showCastRangetoolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem groundZBiasToolStripMenuItem;
         private ToolStripTrackBar ground_zbias_ToolStripTrackBar;
         private System.Windows.Forms.ToolStripMenuItem alphaLeveltoolStripMenuItem;

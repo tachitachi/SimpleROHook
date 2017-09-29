@@ -30,6 +30,7 @@ namespace SimpleROHookCS
             public int bbe;
             public int deadcell;
             public int chatscope;
+            public int castrange;
             public int fix_windowmode_vsyncwait;
             public int show_framerate;
             public int objectinformation;
@@ -65,6 +66,7 @@ namespace SimpleROHookCS
             bbe = false;
             deadcell = false;
             chatscope = false;
+            castrange = false;
             fix_windowmode_vsyncwait = false;
             show_framerate = false;
             objectinformation = false;
@@ -172,6 +174,18 @@ namespace SimpleROHookCS
             set
             {
                 m_pSharedMemory->chatscope = (value == false) ? 0 : 1;
+            }
+        }
+
+        public bool castrange
+        {
+            get
+            {
+                return (m_pSharedMemory->castrange == 0) ? false : true;
+            }
+            set
+            {
+                m_pSharedMemory->castrange = (value == false) ? 0 : 1;
             }
         }
 

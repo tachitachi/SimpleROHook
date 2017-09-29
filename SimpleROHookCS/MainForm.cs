@@ -100,7 +100,9 @@ namespace SimpleROHookCS
                 = m_SharedData.deadcell;
             showChatScopetoolStripMenuItem.Checked
                 = m_SharedData.chatscope;
-            
+            showCastRangetoolStripMenuItem.Checked
+                = m_SharedData.castrange;
+
             CPUCooler_toolStripTrackBar.Value =
                 m_SharedData.cpucoolerlevel;
             Set_CPUCoolerText_toolStripMenuItem(m_SharedData.cpucoolerlevel);
@@ -152,6 +154,11 @@ namespace SimpleROHookCS
         {
             var tsm = (ToolStripMenuItem)sender;
             m_SharedData.chatscope = tsm.Checked;
+        }
+        private void showCastRangetoolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var tsm = (ToolStripMenuItem)sender;
+            m_SharedData.castrange = tsm.Checked;
         }
         private void showM2EToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -689,6 +696,8 @@ Skill00FE=0x00000000
                         = configration.deadcell;
                     m_SharedData.chatscope
                         = configration.chatscope;
+                    m_SharedData.castrange
+                        = configration.castrange;
                     m_SharedData.fix_windowmode_vsyncwait
                         = configration.fix_windowmode_vsyncwait;
                     m_SharedData.show_framerate
@@ -751,6 +760,8 @@ Skill00FE=0x00000000
                     = m_SharedData.deadcell;
                 configration.chatscope
                     = m_SharedData.chatscope;
+                configration.castrange
+                    = m_SharedData.castrange;
                 configration.fix_windowmode_vsyncwait
                     = m_SharedData.fix_windowmode_vsyncwait;
                 configration.show_framerate
@@ -809,6 +820,7 @@ Skill00FE=0x00000000
             bbe = true;
             deadcell = true;
             chatscope = true;
+            castrange = true;
             fix_windowmode_vsyncwait = true;
             show_framerate = true;
             objectinformation = false;
@@ -825,6 +837,7 @@ Skill00FE=0x00000000
         public bool bbe { get; set; }
         public bool deadcell { get; set; }
         public bool chatscope { get; set; }
+        public bool castrange { get; set; }
         public bool fix_windowmode_vsyncwait { get; set; }
         public bool show_framerate { get; set; }
         public bool objectinformation { get; set; }

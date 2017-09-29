@@ -1053,6 +1053,32 @@ void CRoCodeBind::DrawM2E(IDirect3DDevice7* d3ddevice)
 	}
 }
 
+int distance_circle(int dx, int dy)
+{
+	double temp_dist = std::sqrt((double)(dx*dx + dy*dy));
+	
+		//Bonus factor used by client
+		//This affects even horizontal/vertical lines so they are one cell longer than expected
+		temp_dist -= 0.0625;
+	
+		if (temp_dist < 0) temp_dist = 0;
+	
+		return ((int)temp_dist);
+}
+bool check_distance_circle(int dx, int dy, int distance)
+{
+	if (distance < 0) distance = 0;
+	
+	return (distance_circle(dx, dy) == distance);
+}
+
+bool check_distance(int dx, int dy, int distance)
+{
+	if (dx < 0) dx = -dx;
+	if (dy < 0) dy = -dy;
+	return ((dx<dy ? dy : dx) == distance);
+}
+
 void CRoCodeBind::DrawBBE(IDirect3DDevice7* d3ddevice)
 {
 	CGameMode *pGamemode = (CGameMode*)g_pmodeMgr->m_curMode;
@@ -1064,6 +1090,7 @@ void CRoCodeBind::DrawBBE(IDirect3DDevice7* d3ddevice)
 	BOOL bbe = g_pSharedData->bbe;
 	BOOL deadcell = g_pSharedData->deadcell;
 	BOOL chatscope = g_pSharedData->chatscope;
+	BOOL castrange = g_pSharedData->castrange;
 
 	d3ddevice->SetTexture(0, NULL);
 	d3ddevice->SetRenderState(D3DRENDERSTATE_ZENABLE, D3DZB_TRUE);
@@ -1119,6 +1146,12 @@ void CRoCodeBind::DrawBBE(IDirect3DDevice7* d3ddevice)
 						if ((xx - cx) >= -9 && (xx - cx) <= +9 && ((yy - cy) == -9 || (yy - cy) == +9)
 							|| (yy - cy) >= -9 && (yy - cy) <= +9 && ((xx - cx) == -9 || (xx - cx) == +9)){
 							color = 0x0000ff00;
+						}
+					}
+
+					if (castrange) {
+						if (check_distance_circle(xx - cx, yy - cy, 9)) {
+							color = 0x0033ff33;
 						}
 					}
 

@@ -70,7 +70,7 @@ namespace SimpleROHookCS
             objectinformation = false;
             _44khz_audiomode = false;
             cpucoolerlevel = 0;
-            chainload = false;
+            chainload = true;
             configfilepath = "";
             musicfilename = "";
             executeorder = false;

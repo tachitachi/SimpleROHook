@@ -1151,7 +1151,7 @@ void CRoCodeBind::DrawBBE(IDirect3DDevice7* d3ddevice)
 
 					if (castrange) {
 						if (check_distance_circle(xx - cx, yy - cy, 9)) {
-							color = 0x0033ff33;
+							color = 0x007f00ff;
 						}
 					}
 

@@ -76,6 +76,7 @@ static HRESULT CALLBACK TextureSearchCallback( DDPIXELFORMAT* pddpf,
 
 void CRoCodeBind::Init(IDirect3DDevice7* d3ddevice)
 {
+	DEBUG_LOGGING_NORMAL(("CRoCodeBind::Init"));
 	SearchRagexeMemory();
 	InitItemNameMap();
 	InitPacketHandler();
@@ -142,6 +143,7 @@ void CRoCodeBind::Init(IDirect3DDevice7* d3ddevice)
 		}
 	}
 
+	DisableDebugLoggerForInit();
 }
 
 CRoCodeBind::~CRoCodeBind(void)
@@ -171,6 +173,7 @@ void CRoCodeBind::ReleasePak(void *handle)
 
 void CRoCodeBind::InitItemNameMap()
 {
+	DEBUG_LOGGING_NORMAL(("CRoCodeBind::InitItemNameMap"));
 	char *buf = NULL;
 	char *p, *ptoken;
 
@@ -395,6 +398,7 @@ void CRoCodeBind::ProjectVertexEx(vector3d& src,vector3d& pointvector, matrix& v
 
 void CRoCodeBind::LoadIni(void)
 {
+	DEBUG_LOGGING_NORMAL(("CRoCodeBind::LoadIni"));
 	if( g_pSharedData ){
 
 		int sectionsize;
@@ -433,6 +437,9 @@ void CRoCodeBind::LoadIni(void)
 				pkey++;
 			}
 		}
+	}
+	else {
+		DEBUG_LOGGING_NORMAL(("CRoCodeBind::LoadIni: shared data is null???"));
 	}
 }
 
@@ -1216,6 +1223,7 @@ int CRoCodeBind::GetTreeData(p_std_map_packetlen* node)
 
 void CRoCodeBind::InitPacketHandler(void)
 {
+	DEBUG_LOGGING_NORMAL(("CRoCodeBind::InitPacketHandler"));
 	m_packethandler[HEADER_ZC_SAY_DIALOG] = &CRoCodeBind::PacketHandler_Cz_Say_Dialog;
 	m_packethandler[HEADER_ZC_MENU_LIST] = &CRoCodeBind::PacketHandler_Cz_Menu_List;
 }
@@ -1439,6 +1447,7 @@ void CRoCodeBind::PacketQueueProc(char *buf,int len)
 
 void CRoCodeBind::SearchRagexeMemory(void)
 {
+	DEBUG_LOGGING_NORMAL(("CRoCodeBind::SearchRagexeMemory"));
 	// CZ_UIYourItemWnd::SendMsg CZ_REQ_WEAR_EQUIP handler
 	// Marker '1' CModeMgr g_modeMgr (C++ Class Instance)
 	// Marker '2' CModeMgr::GetGameMode

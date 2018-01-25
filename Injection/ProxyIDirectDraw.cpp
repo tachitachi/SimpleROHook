@@ -224,7 +224,7 @@ void CProxyIDirect3DDevice7::Proxy_Release(void)
 
 HRESULT CProxyIDirect3DDevice7::Proxy_SetRenderState(THIS_ D3DRENDERSTATETYPE dwRenderStateType,DWORD dwRenderState)
 {
-	//DEBUG_LOGGING_MORE_DETAIL(("CProxyIDirect3D7::Proxy_SetRenderState() type:%08X val:%08X",dwRenderStateType,dwRenderState));
+	DEBUG_LOGGING_MORE_DETAIL(("CProxyIDirect3D7::Proxy_SetRenderState() type:%08X val:%08X",dwRenderStateType,dwRenderState));
 	if( dwRenderStateType == D3DRENDERSTATE_ZENABLE && dwRenderState == 0 ){
 		//
 		// UI is drawn after the Zbuffer is disabled.
@@ -237,6 +237,7 @@ HRESULT CProxyIDirect3DDevice7::Proxy_SetRenderState(THIS_ D3DRENDERSTATETYPE dw
 
 HRESULT CProxyIDirect3DDevice7::Proxy_BeginScene(void)
 {
+	DEBUG_LOGGING_MORE_DETAIL(("CProxyIDirect3DDevice7::Proxy_BeginScene"));
 	HRESULT result;
 	if( m_firstonce ){
 		m_firstonce = false;
@@ -252,6 +253,7 @@ HRESULT CProxyIDirect3DDevice7::Proxy_BeginScene(void)
 
 HRESULT CProxyIDirect3DDevice7::Proxy_EndScene(void)
 {
+	DEBUG_LOGGING_MORE_DETAIL(("CProxyIDirect3DDevice7::Proxy_EndScene"));
 	g_PerformanceCounter.ModifiFrameRate();
 	if( g_pRoCodeBind )
 		g_pRoCodeBind->DrawSRHDebug( m_Instance );

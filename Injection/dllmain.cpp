@@ -8,6 +8,7 @@
 
 #include "Core/RoCodeBind.h"
 
+#include <ctime>
 
 BOOL InstallProxyFunction(LPCTSTR dllname,LPCSTR exportname,VOID *ProxyFunction,LPVOID *pOriginalFunction)
 {
@@ -21,10 +22,14 @@ BOOL InstallProxyFunction(LPCTSTR dllname,LPCSTR exportname,VOID *ProxyFunction,
 	fullpath << systemdir << "\\" << dllname;
 	hDll = ::LoadLibrary(fullpath.str().c_str() );
 
-	if( !hDll )
-		return result;
 
-	DEBUG_LOGGING_DETAIL(("hook %s\n", dllname));
+	DEBUG_LOGGING_DETAIL(("trying to hook %s:%s\n", dllname, exportname));
+
+	if (!hDll)
+	{
+		DEBUG_LOGGING_DETAIL(("could not get handle"));
+		return result;
+	}
 
 	BYTE *p = (BYTE*)::GetProcAddress(hDll, exportname);
 
@@ -118,6 +123,7 @@ void __declspec(naked) ProxyAIL_open_digital_driver(void)
 
 BOOL RagexeSoundRateFixer(void)
 {
+	DEBUG_LOGGING_NORMAL(("Performing sound rate fix"));
 	BOOL result = FALSE;
 	std::stringstream fullpath;
 
@@ -129,6 +135,7 @@ BOOL RagexeSoundRateFixer(void)
 	hDll = ::LoadLibrary(fullpath.str().c_str() );
 
 	if( !hDll ){
+		DEBUG_LOGGING_NORMAL(("sound rate fix: could not open mss32.dll"));
 		return result;
 	}
 
@@ -151,9 +158,19 @@ BOOL RagexeSoundRateFixer(void)
 				::VirtualProtect( (LPVOID)&p[-5], 7 , flOldProtect, &flDontCare);
 				result = TRUE;
 			}
+			else {
+				DEBUG_LOGGING_NORMAL(("sound rate fix: could not change page permissions"));
+			}
 		}
 	}
+	else {
+		DEBUG_LOGGING_NORMAL(("sound rate fix: no symbol _AIL_open_digital_driver@16"));
+	}
 	::FreeLibrary(hDll);
+
+	if (!result) {
+		DEBUG_LOGGING_NORMAL(("sound rate fix: failed to apply"));
+	}
 
 	return result;
 }
@@ -262,13 +279,28 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 			TCHAR temppath[MAX_PATH];
 			::DisableThreadLibraryCalls( hModule );
 			CreateTinyConsole();
+			DEBUG_LOGGING_NORMAL(("Tiny Console created."));
 			OpenSharedMemory();
+			DEBUG_LOGGING_NORMAL(("Shared memory opened."));
+
+			char currentdir[MAX_PATH];
+			::GetCurrentDirectoryA(MAX_PATH, currentdir);
+
+			DEBUG_LOGGING_NORMAL(("Working directory: %s", currentdir));
+
+			std::stringstream datetime;
+			auto t = std::time(nullptr);
+			auto tm = *std::localtime(&t);
+			datetime << std::put_time(&tm, "%d-%m-%Y %H:%M:%S") << std::endl;
+			DEBUG_LOGGING_NORMAL((datetime.str().c_str()));
+
 #ifdef USE_WS2_32DLLINJECTION
 			InstallProxyFunction(
 				_T("ws2_32.dll"), "recv",
 				ProxyWS2_32_recv, (LPVOID*)&OrigWS2_32_recv);
 #endif
 			if (g_pSharedData) {
+				DEBUG_LOGGING_NORMAL(("Shared data found."));
 				::GetCurrentDirectory(MAX_PATH, temppath);
 				strcat_s(temppath, "\\BGM\\");
 
@@ -281,8 +313,8 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 
 				if (g_pSharedData->chainload)
 				{
-					char currentdir[MAX_PATH];
-					::GetCurrentDirectoryA(MAX_PATH, currentdir);
+					DEBUG_LOGGING_NORMAL(("Attempting to chainload"));
+
 					// LoadLibrary fails gracefully, so we just try to load both files
 					// if one doesn't exist, ignore it
 					if (!GetModuleHandle("dinput.dll"))

@@ -30,6 +30,8 @@ public:
 	{
 		ofs.close();
 	};
+
+	bool isInitialising = true;
 };
 
 CTinylogger *s_pTinyLogger = NULL;
@@ -74,6 +76,34 @@ void DebugLoggerWithLogWindow(const char* format, ...)
 
 	delete[] buf;
 	va_end(argptr);
+}
+
+void DebugLoggerForInit(const char* format, ...)
+{
+	va_list argptr;
+	va_start(argptr, format);
+
+	if (s_pTinyLogger && s_pTinyLogger->isInitialising)
+	{
+		int length = _vscprintf(format, argptr);
+		char* buf = new char[length + 2];
+		vsprintf_s(buf, length + 2, format, argptr);
+		strcat_s(buf, length + 2, "\n");
+
+		*s_pTinyLogger << buf;
+
+		delete[] buf;
+	}
+	va_end(argptr);
+}
+
+void DisableDebugLoggerForInit()
+{
+	if (s_pTinyLogger)
+	{
+		DebugLogger("Init done, detailed logging disabled");
+		s_pTinyLogger->isInitialising = false;
+	}
 }
 
 
@@ -147,6 +177,14 @@ LRESULT CALLBACK TinyConsoleWinProc( HWND hWnd, UINT message, WPARAM wParam, LPA
                     SCF_SELECTION | SCF_WORD,
                     (LPARAM)&cfm);
 			::SendMessage( s_hRichEdit, EM_REPLACESEL, FALSE, (LPARAM)(LPCTSTR)_T("hook enable.\n") );
+			
+			TCHAR currentdir[MAX_PATH];
+			HINSTANCE hDll;
+			::GetCurrentDirectoryA(MAX_PATH, currentdir);
+			::SendMessage(s_hRichEdit, EM_REPLACESEL, FALSE, (LPARAM)(LPCTSTR)currentdir);
+			::SendMessage(s_hRichEdit, EM_REPLACESEL, FALSE, (LPARAM)(LPCTSTR)_T("\n"));
+
+			
 			if( g_hTinyConsole ){
 				::SetEvent( g_hTinyConsole );
 			}

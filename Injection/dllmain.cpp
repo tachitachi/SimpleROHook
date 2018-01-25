@@ -8,6 +8,8 @@
 
 #include "Core/RoCodeBind.h"
 
+#include "versioninfo.h"
+
 static BOOL g_useMinHook = TRUE;
 
 BOOL InstallProxyFunction(LPCTSTR dllname,LPCSTR exportname,VOID *ProxyFunction,LPVOID *pOriginalFunction)
@@ -320,6 +322,8 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 
 			CreateTinyConsole();
 			OpenSharedMemory();
+
+			DEBUG_LOGGING_NORMAL(("Version: %s (Built at: %s %s)", GIT_VERSION, __DATE__, __TIME__));
 #ifdef USE_WS2_32DLLINJECTION
 			InstallProxyFunction(
 				_T("ws2_32.dll"), "recv",

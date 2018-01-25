@@ -1,0 +1,1 @@
+for /f %%i in ('git describe --always --dirty --tags') do ((echo #define GIT_VERSION ^"%%i^") > C:\Users\drdax\Source\Repos\SimpleROHook\Injection\Injection\versioninfo.h)

@@ -9,3 +9,4 @@ obj
 *.vcxproj.user
 .vs
 packages
+Injection/versioninfo.h

@@ -10,6 +10,8 @@
 
 #include <ctime>
 
+#include "versioninfo.h"
+
 static BOOL g_useMinHook = TRUE;
 
 BOOL InstallProxyFunction(LPCTSTR dllname,LPCSTR exportname,VOID *ProxyFunction,LPVOID *pOriginalFunction)
@@ -337,6 +339,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 
 			CreateTinyConsole();
 			DEBUG_LOGGING_NORMAL(("Tiny Console created."));
+			DEBUG_LOGGING_NORMAL(("Version: %s (Built at: %s %s)", GIT_VERSION, __DATE__, __TIME__));
 			OpenSharedMemory();
 			DEBUG_LOGGING_NORMAL(("Shared memory opened."));
 
@@ -350,7 +353,6 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 			auto tm = *std::localtime(&t);
 			datetime << std::put_time(&tm, "%d-%m-%Y %H:%M:%S") << std::endl;
 			DEBUG_LOGGING_NORMAL((datetime.str().c_str()));
-
 #ifdef USE_WS2_32DLLINJECTION
 			InstallProxyFunction(
 				_T("ws2_32.dll"), "recv",

@@ -10,9 +10,63 @@
 
 #include <ctime>
 
+static BOOL g_useMinHook = TRUE;
+
 BOOL InstallProxyFunction(LPCTSTR dllname,LPCSTR exportname,VOID *ProxyFunction,LPVOID *pOriginalFunction)
 {
 	BOOL result = FALSE;
+
+	DEBUG_LOGGING_NORMAL(("InstallProxyFunction(%s:%s)", dllname, exportname));
+
+	if (g_useMinHook)
+	{
+		LPVOID ppTarget;
+		LPWSTR dllnameW;
+#ifdef UNICODE
+		// this is kinda silly since none of the other code cares about supporting DUNICODE but hey
+		dllnameW = dllname;
+#else
+		int len = MultiByteToWideChar(CP_ACP, 0, dllname, -1, NULL, 0);
+		if (len == 0)
+		{
+			DEBUG_LOGGING_NORMAL(("dllname conversion length check failed (WTF?)"));
+			goto fallback;
+		}
+		dllnameW = new wchar_t[len];
+		if (MultiByteToWideChar(CP_ACP, 0, dllname, -1, dllnameW, len) == 0)
+		{
+			DEBUG_LOGGING_NORMAL(("dllname conversion failed (WTF?)"));
+			goto error_free_wstr;
+		}
+#endif 
+		int result = MH_CreateHookApiEx(dllnameW, exportname, ProxyFunction, pOriginalFunction, &ppTarget);
+		if (result != MH_OK)
+		{
+			DEBUG_LOGGING_NORMAL(("MH_CreateHookApiEx() failed (%d)", result));
+			goto error_free_wstr;
+		}
+		result = MH_EnableHook(ppTarget);
+		if (result != MH_OK)
+		{
+			DEBUG_LOGGING_NORMAL(("MH_EnableHook failed (%d)", result));
+			goto error_free_wstr;
+		}
+		else
+		{
+			DEBUG_LOGGING_NORMAL(("success"));
+			return TRUE;
+		}
+	error_free_wstr:
+#ifdef UNICODE
+		delete[] dllnameW;
+#endif
+		;
+	}
+
+fallback:
+	// fall back to old code, probably don't need this but it's there
+	DEBUG_LOGGING_NORMAL(("Trying fallback"));
+
 	std::stringstream fullpath;
 
 	TCHAR systemdir[MAX_PATH];
@@ -21,9 +75,6 @@ BOOL InstallProxyFunction(LPCTSTR dllname,LPCSTR exportname,VOID *ProxyFunction,
 
 	fullpath << systemdir << "\\" << dllname;
 	hDll = ::LoadLibrary(fullpath.str().c_str() );
-
-
-	DEBUG_LOGGING_DETAIL(("trying to hook %s:%s\n", dllname, exportname));
 
 	if (!hDll)
 	{
@@ -278,6 +329,12 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 		{
 			TCHAR temppath[MAX_PATH];
 			::DisableThreadLibraryCalls( hModule );
+
+			if (MH_Initialize() != MH_OK)
+			{
+				DEBUG_LOGGING_NORMAL(("MH_Initialize() failed, falling back to old DLL proxy code"));
+			}
+
 			CreateTinyConsole();
 			DEBUG_LOGGING_NORMAL(("Tiny Console created."));
 			OpenSharedMemory();

@@ -103,8 +103,7 @@
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>(for /f %%i in ('git describe --always --dirty --tags') do ((echo #define GIT_VERSION ^"%%i^") &gt; $(ProjectDir)versioninfo.h))
-REM for /f %i in ('echo Test') do echo %i</Command>
+      <Command>(for /f %%i in ('git describe --always --dirty --tags') do ((echo #define GIT_VERSION ^"%%i^") &gt; "$(ProjectDir)versioninfo.h"))</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release-iRO|Win32'">
@@ -127,8 +126,7 @@ REM for /f %i in ('echo Test') do echo %i</Command>
       </ModuleDefinitionFile>
     </Link>
     <PreBuildEvent>
-      <Command>(for /f %%i in ('git describe --always --dirty --tags') do ((echo #define GIT_VERSION ^"%%i^") &gt; $(ProjectDir)versioninfo.h))
-REM for /f %i in ('echo Test') do echo %i</Command>
+      <Command>(for /f %%i in ('git describe --always --dirty --tags') do ((echo #define GIT_VERSION ^"%%i^") &gt; "$(ProjectDir)versioninfo.h"))</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release-bRO|Win32'">
@@ -151,8 +149,7 @@ REM for /f %i in ('echo Test') do echo %i</Command>
       </ModuleDefinitionFile>
     </Link>
     <PreBuildEvent>
-      <Command>(for /f %%i in ('git describe --always --dirty --tags') do ((echo #define GIT_VERSION ^"%%i^") &gt; $(ProjectDir)versioninfo.h))
-REM for /f %i in ('echo Test') do echo %i</Command>
+      <Command>(for /f %%i in ('git describe --always --dirty --tags') do ((echo #define GIT_VERSION ^"%%i^") &gt; "$(ProjectDir)versioninfo.h"))</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release-jRO|Win32'">
@@ -175,8 +172,7 @@ REM for /f %i in ('echo Test') do echo %i</Command>
       </ModuleDefinitionFile>
     </Link>
     <PreBuildEvent>
-      <Command>(for /f %%i in ('git describe --always --dirty --tags') do ((echo #define GIT_VERSION ^"%%i^") &gt; $(ProjectDir)versioninfo.h))
-REM for /f %i in ('echo Test') do echo %i</Command>
+      <Command>(for /f %%i in ('git describe --always --dirty --tags') do ((echo #define GIT_VERSION ^"%%i^") &gt; "$(ProjectDir)versioninfo.h"))</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

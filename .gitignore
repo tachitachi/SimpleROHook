@@ -7,3 +7,4 @@ obj
 *.suo
 *.opendb
 *.vcxproj.user
+.vs

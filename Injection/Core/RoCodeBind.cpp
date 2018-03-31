@@ -689,7 +689,7 @@ void CRoCodeBind::DrawSRHDebug(IDirect3DDevice7* d3ddevice)
 
 				str << "m_clevel = " << pPlayer->m_clevel << "\n";
 				str << "m_gid = " << std::hex << (unsigned long)pPlayer->m_gid << "\n";
-				str << "m_job = " << std::hex << (unsigned long)pPlayer->m_job << "\n";
+				str << "m_job = " << std::hex << (unsigned long)*(pPlayer->pJob()) << "\n";
 				str << "m_sex = " << std::hex << (unsigned long)pPlayer->m_sex << "\n\n";
 #if 0
 				str << "m_cgameactor_unknown_state01 = " << std::hex << (unsigned long)pPlayer->m_cgameactor_unknown_state01 << "\n";
@@ -817,7 +817,7 @@ void CRoCodeBind::DrawSRHDebug(IDirect3DDevice7* d3ddevice)
 					CSkill *pSkill = *it;
 					if (pSkill){
 						putinfostr << "SKILL INFO" << std::endl;
-						putinfostr << "m_job = " << std::hex << pSkill->m_job << std::endl;
+						putinfostr << "m_job = " << std::hex << *(pSkill->pJob()) << std::endl;
 						putinfostr << "m_ownerGid = " << std::hex << pSkill->m_ownerGid << std::endl;
 						putinfostr << "m_launchCnt = " << pSkill->m_launchCnt << std::endl;
 						putinfostr << "m_aid = " << pSkill->m_aid << std::endl;
@@ -884,7 +884,7 @@ void CRoCodeBind::DrawSRHDebug(IDirect3DDevice7* d3ddevice)
 					putinfostr << "(" << cx << "," << cy << ")" << std::endl;
 				//	putinfostr << "dest(" << pGameActor->m_moveDestX << "," << pGameActor->m_moveDestY << ")" << std::endl;
 					putinfostr << "lv = " << pGameActor->m_clevel << std::endl;
-					putinfostr << "job = " << pGameActor->m_job << std::endl;
+					putinfostr << "job = " << *(pGameActor->pJob()) << std::endl;
 					putinfostr << "m_npcId = " << pGameActor->m_npcId << std::endl;
 
 					putinfostr << "m_whiffCounter = " << pGameActor->m_whiffCounter << std::endl;
@@ -1016,8 +1016,8 @@ void CRoCodeBind::DrawM2E(IDirect3DDevice7* d3ddevice)
 		{
 			CSkill *pSkill = *it;
 
-			if( pSkill && pSkill->m_job < 0x100 && m_M2ESkillColor[pSkill->m_job] ){
-				DWORD color = m_M2ESkillColor[pSkill->m_job];
+			if( pSkill && *(pSkill->pJob()) < 0x100 && m_M2ESkillColor[*(pSkill->pJob())] ){
+				DWORD color = m_M2ESkillColor[*(pSkill->pJob())];
 				CPOLVERTEX vertex[4] =
 				{
 					{   0.0,  0.0,   0.0f,  1.0f, color },
@@ -1436,9 +1436,16 @@ void CRoCodeBind::PacketQueueProc(char *buf,int len)
 	}
 }
 
-
+intptr_t CGameActor::jobOffset = offsetof(CGameActor, CGameActor::m_job_deprecated);
 void CRoCodeBind::SearchRagexeMemory(void)
 {
+  CSearchCode CGameActor_Job_use(
+    "89***1******"    // mov [edi+234h], eax ; m_job
+    "8b**"            // mov esi, [edi]
+    "8b**"            // mov ecx, edi
+    "e8********"      // call sub_698C70
+  );
+
 	// CZ_UIYourItemWnd::SendMsg CZ_REQ_WEAR_EQUIP handler
 	// Marker '1' CModeMgr g_modeMgr (C++ Class Instance)
 	// Marker '2' CModeMgr::GetGameMode
@@ -1848,6 +1855,20 @@ void CRoCodeBind::SearchRagexeMemory(void)
 				break;
 			}
 		}
+
+    for (UINT ii = 0; ii < mbi.RegionSize - CGameActor_Job_use.GetSize(); ii++)
+    {
+      LPBYTE pBase = (LPBYTE)mbi.BaseAddress;
+
+      if (CGameActor_Job_use.PatternMatcher(&pBase[ii]))
+      {
+        CGameActor::jobOffset = CGameActor_Job_use.GetImmediateDWORD(&pBase[ii], '1');
+        DEBUG_LOGGING_NORMAL(("Find CGameActor::m_job offset = %08X (found at %08X)",
+          CGameActor::jobOffset, &pBase[ii]));
+
+        break;
+      }
+    }
 
 		// snatch the packetLenMap
 		for( UINT ii = 0; ii < mbi.RegionSize - 1000 ; ii++ )

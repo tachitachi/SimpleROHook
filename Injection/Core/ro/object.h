@@ -562,10 +562,10 @@ public:
 #ifndef JRO_CLIENT_STRUCTURE
 	unsigned long m_gid;
 #endif
-#ifdef CGAMEACTOR_PADDING_8
-	// As with CMode, I don't know where these 8 extra bytes come from
+#ifdef CGAMEACTOR_PADDING
+	// As with CMode, I don't know where these extra bytes come from
 	// but putting them here fixes M2E
-	char m_pad1[8];
+	char m_pad1[CGAMEACTOR_PADDING];
 #endif
 	int m_job;
 	int m_sex;

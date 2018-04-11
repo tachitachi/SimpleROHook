@@ -22,10 +22,32 @@ The best place to **get technical support** and be notified of updates is #addon
 * *3D Map Grid* > *Alpha Level* controls the opacity of the gutterline overlay.
 * Feel free to close the console window that pops up when you run a client.
 
+#### Updating
+
+* To update, just replace the files in your existing SimpleROHook installation with the files from the new archive.
+* **If you want to keep your settings,** do *not* replace `config.ini` or `config.xml`!
+
 #### Ground skill effect display (M2E)
 
 * Check *3D Map Grid* > *Show M2E* to mark cells currently affected by ground targeting skills (Storm Gust etc.).
 * You can edit `config.ini` to set colors for specific skills.
+
+#### New: Custom colors for deadcell/chatscope/castrange/gutterlines
+
+* Since Apr 11, 2018 you can change colors for the other features.
+* Edit `config.ini` as with M2E, you'll find a new `[MiscColor]` section at the top.
+* If you're updating from a previous version and would like to keep your M2E settings, this is the section you need to add to the top or bottom of the file:
+  * **Do not** just add it somewhere in the middle, that would break all following M2E skill colors!
+  
+```
+[MiscColor]
+; Alpha is ignored for these - use the alpha level option in the GUI
+Deadcell=0x00FF00FF
+Chatscope=0x0000FF00
+Castrange=0x007F00FF
+Gutterline=0x00FF0000
+Demigutter=0x000000FF
+```
   
 ### Disclaimers
 

@@ -432,6 +432,32 @@ void CRoCodeBind::LoadIni(void)
 				m_M2ESkillColor[index] = color;
 				pkey++;
 			}
+
+      m_deadcellColor = 0x00ff00ff;
+      m_chatscopeColor = 0x0000ff00;
+      m_castrangeColor = 0x007f00ff;
+      m_bbeGutterlineColor = 0x00ff0000;
+      m_bbeDemigutterColor = 0x000000ff;
+
+      sectionsize = GetPrivateProfileSection(_T("MiscColor"), Sectionbuf, 32768, filename);
+      pkey = Sectionbuf;
+      while (*pkey != '\0') {
+        DWORD color;
+
+        char *ptemp;
+        ptemp = pkey;
+
+        std::string linestring(ptemp);
+
+        pkey += linestring.length();
+
+        if (sscanf_s(linestring.c_str(), "Deadcell=%x", &color)) m_deadcellColor = color & 0x00ffffff;
+        if (sscanf_s(linestring.c_str(), "Chatscope=%x", &color)) m_chatscopeColor = color & 0x00ffffff;
+        if (sscanf_s(linestring.c_str(), "Castrange=%x", &color)) m_castrangeColor = color & 0x00ffffff;
+        if (sscanf_s(linestring.c_str(), "Gutterline=%x", &color)) m_bbeGutterlineColor = color & 0x00ffffff;
+        if (sscanf_s(linestring.c_str(), "Demigutter=%x", &color)) m_bbeDemigutterColor = color & 0x00ffffff;
+        pkey++;
+      }
 		}
 	}
 }
@@ -1130,28 +1156,28 @@ void CRoCodeBind::DrawBBE(IDirect3DDevice7* d3ddevice)
 					if (!pCell->flag && bbe)
 					{
 						if ((xx % 40 == 0) || (yy % 40 == 0)) {
-							color = 0x00FF0000;
+							color = m_bbeGutterlineColor;
 						}
 						else if ((xx % 40 < 5) || (yy % 40 < 5)) {
-							color = 0x000000FF;
+							color = m_bbeDemigutterColor;
 						}
 					}
 					if (pCell->flag){
 						if (deadcell){
-							color = 0x00ff00ff;
+							color = m_deadcellColor;
 						}
 					}
 
 					if (chatscope){
 						if ((xx - cx) >= -9 && (xx - cx) <= +9 && ((yy - cy) == -9 || (yy - cy) == +9)
 							|| (yy - cy) >= -9 && (yy - cy) <= +9 && ((xx - cx) == -9 || (xx - cx) == +9)){
-							color = 0x0000ff00;
+							color = m_chatscopeColor;
 						}
 					}
 
 					if (castrange) {
 						if (check_distance_circle(xx - cx, yy - cy, 9)) {
-							color = 0x007f00ff;
+							color = m_castrangeColor;
 						}
 					}
 

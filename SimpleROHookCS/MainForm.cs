@@ -284,6 +284,15 @@ namespace SimpleROHookCS
 ; GG:Green  00-FF (0-255)
 ; BB:Blue   00-FF (0-255)
 ;----------------------------------------------------------------------------//
+
+[MiscColor]
+; Alpha is ignored for these - use the alpha level option in the GUI
+Deadcell=0x00FF00FF
+Chatscope=0x0000FF00
+Castrange=0x007F00FF
+Gutterline=0x00FF0000
+Demigutter=0x000000FF
+
 [M2E]
 ; 
 ; Safety_Wall

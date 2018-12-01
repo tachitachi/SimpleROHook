@@ -45,6 +45,12 @@ struct CPOLVERTEX {
 	DWORD color;        // The vertex color
 };
 
+struct ProxyMap {
+	UCHAR ip_address[4];
+	USHORT port_src;
+	USHORT port_dst;
+};
+
 typedef void (__cdecl *tPlayStream)(const char *streamFileName,int playflag);
 
 typedef void* (__thiscall *tCFileMgr__GetData)(/*CFileMgr*/void *this_pt, const char *name, unsigned int *size);
@@ -91,6 +97,9 @@ private:
 
 #define MAX_FLLORSKILLTYPE 0x100
 	DWORD m_M2ESkillColor[MAX_FLLORSKILLTYPE];
+
+#define MAX_PROXY_SERVERS 64
+	ProxyMap m_proxyMaps[MAX_PROXY_SERVERS];
 
   DWORD m_deadcellColor;
   DWORD m_chatscopeColor;
@@ -141,6 +150,7 @@ private:
 	void ProjectVertexEx(vector3d& src, vector3d& pointvector, matrix& vtm, tlvertex3d *vert);
 
 	void LoadIni(void);
+	void LoadProxy(void);
 	void SearchRagexeMemory(void);
 
 	LPDIRECTDRAWSURFACE7 m_pddsFontTexture;
@@ -181,6 +191,8 @@ public:
 
 	int GetPacketLength(int opcode);
 	void PacketQueueProc(char *buf,int len);
+
+	sockaddr CRoCodeBind::ProxyConnectionMapping(const sockaddr *name, int namelen);
 
 	void InitWindowHandle(HWND hWnd){m_hWnd = hWnd;};
 

@@ -80,6 +80,7 @@ void CRoCodeBind::Init(IDirect3DDevice7* d3ddevice)
 	InitItemNameMap();
 	InitPacketHandler();
 	LoadIni();
+	LoadProxy();
 
 	D3DDEVICEDESC7 ddDesc;
 	d3ddevice->GetCaps( &ddDesc );
@@ -395,29 +396,29 @@ void CRoCodeBind::ProjectVertexEx(vector3d& src,vector3d& pointvector, matrix& v
 
 void CRoCodeBind::LoadIni(void)
 {
-	if( g_pSharedData ){
+	if (g_pSharedData) {
 
 		int sectionsize;
 		char Sectionbuf[32768];
 		char *pkey;
 		char filename[MAX_PATH];
 
-		if( ::WideCharToMultiByte(CP_ACP,0,
-			g_pSharedData->configfilepath,wcslen(g_pSharedData->configfilepath)+1,
-			filename,sizeof(filename),
-			NULL,NULL) ){
+		if (::WideCharToMultiByte(CP_ACP, 0,
+			g_pSharedData->configfilepath, wcslen(g_pSharedData->configfilepath) + 1,
+			filename, sizeof(filename),
+			NULL, NULL)) {
 
-		DEBUG_LOGGING_NORMAL( ("LoadIni startup") );
-		DEBUG_LOGGING_NORMAL( ("%s",filename) );
+			DEBUG_LOGGING_NORMAL(("LoadIni startup"));
+			DEBUG_LOGGING_NORMAL(("%s", filename));
 
-			sectionsize = GetPrivateProfileSection(_T("M2E"),Sectionbuf,32768,filename);
+			sectionsize = GetPrivateProfileSection(_T("M2E"), Sectionbuf, 32768, filename);
 			pkey = Sectionbuf;
 
-			for(int ii = 0;ii < MAX_FLLORSKILLTYPE;ii++)
-				m_M2ESkillColor[ii]=0;
+			for (int ii = 0; ii < MAX_FLLORSKILLTYPE; ii++)
+				m_M2ESkillColor[ii] = 0;
 
-			
-			while(*pkey!='\0'){
+
+			while (*pkey != '\0') {
 				int index;
 				DWORD color;
 
@@ -428,36 +429,90 @@ void CRoCodeBind::LoadIni(void)
 
 				pkey += linestring.length();
 
-				sscanf_s(linestring.c_str(),"Skill%x=%x",&index,&color);
+				sscanf_s(linestring.c_str(), "Skill%x=%x", &index, &color);
 				m_M2ESkillColor[index] = color;
 				pkey++;
 			}
 
-      m_deadcellColor = 0x00ff00ff;
-      m_chatscopeColor = 0x0000ff00;
-      m_castrangeColor = 0x007f00ff;
-      m_bbeGutterlineColor = 0x00ff0000;
-      m_bbeDemigutterColor = 0x000000ff;
+			m_deadcellColor = 0x00ff00ff;
+			m_chatscopeColor = 0x0000ff00;
+			m_castrangeColor = 0x007f00ff;
+			m_bbeGutterlineColor = 0x00ff0000;
+			m_bbeDemigutterColor = 0x000000ff;
 
-      sectionsize = GetPrivateProfileSection(_T("MiscColor"), Sectionbuf, 32768, filename);
-      pkey = Sectionbuf;
-      while (*pkey != '\0') {
-        DWORD color;
+			sectionsize = GetPrivateProfileSection(_T("MiscColor"), Sectionbuf, 32768, filename);
+			pkey = Sectionbuf;
+			while (*pkey != '\0') {
+				DWORD color;
 
-        char *ptemp;
-        ptemp = pkey;
+				char *ptemp;
+				ptemp = pkey;
 
-        std::string linestring(ptemp);
+				std::string linestring(ptemp);
 
-        pkey += linestring.length();
+				pkey += linestring.length();
 
-        if (sscanf_s(linestring.c_str(), "Deadcell=%x", &color)) m_deadcellColor = color & 0x00ffffff;
-        if (sscanf_s(linestring.c_str(), "Chatscope=%x", &color)) m_chatscopeColor = color & 0x00ffffff;
-        if (sscanf_s(linestring.c_str(), "Castrange=%x", &color)) m_castrangeColor = color & 0x00ffffff;
-        if (sscanf_s(linestring.c_str(), "Gutterline=%x", &color)) m_bbeGutterlineColor = color & 0x00ffffff;
-        if (sscanf_s(linestring.c_str(), "Demigutter=%x", &color)) m_bbeDemigutterColor = color & 0x00ffffff;
-        pkey++;
-      }
+				if (sscanf_s(linestring.c_str(), "Deadcell=%x", &color)) m_deadcellColor = color & 0x00ffffff;
+				if (sscanf_s(linestring.c_str(), "Chatscope=%x", &color)) m_chatscopeColor = color & 0x00ffffff;
+				if (sscanf_s(linestring.c_str(), "Castrange=%x", &color)) m_castrangeColor = color & 0x00ffffff;
+				if (sscanf_s(linestring.c_str(), "Gutterline=%x", &color)) m_bbeGutterlineColor = color & 0x00ffffff;
+				if (sscanf_s(linestring.c_str(), "Demigutter=%x", &color)) m_bbeDemigutterColor = color & 0x00ffffff;
+				pkey++;
+			}
+		}
+	}
+}
+
+void CRoCodeBind::LoadProxy(void)
+{
+	if (g_pSharedData) {
+
+		int sectionsize;
+		char Sectionbuf[32768];
+		char *pkey;
+		char filename[MAX_PATH];
+
+		if (::WideCharToMultiByte(CP_ACP, 0,
+			g_pSharedData->proxyfilepath, wcslen(g_pSharedData->proxyfilepath) + 1,
+			filename, sizeof(filename),
+			NULL, NULL)) {
+
+			DEBUG_LOGGING_NORMAL(("LoadProxy startup"));
+			DEBUG_LOGGING_NORMAL(("%s", filename));
+
+			sectionsize = GetPrivateProfileSection(_T("Servers"), Sectionbuf, 32768, filename);
+			pkey = Sectionbuf;
+
+			for (int ii = 0; ii < MAX_PROXY_SERVERS; ii++)
+				memset(&m_proxyMaps[ii], 0, sizeof(m_proxyMaps[ii]));
+
+			int num_maps = 0;
+			while (*pkey != '\0') {
+				ProxyMap* proxyMap = &m_proxyMaps[num_maps++];
+
+				char *ptemp;
+				ptemp = pkey;
+
+				std::string linestring(ptemp);
+
+				pkey += linestring.length();
+
+				sscanf_s(linestring.c_str(), "%hhd.%hhd.%hhd.%hhd:%hd\t%hd", &proxyMap->ip_address[0],
+					&proxyMap->ip_address[1], &proxyMap->ip_address[2], &proxyMap->ip_address[3], &proxyMap->port_src, &proxyMap->port_dst);
+
+				std::stringstream str;
+				str << (int)(unsigned char)proxyMap->ip_address[0] << ".";
+				str << (int)(unsigned char)proxyMap->ip_address[1] << ".";
+				str << (int)(unsigned char)proxyMap->ip_address[2] << ".";
+				str << (int)(unsigned char)proxyMap->ip_address[3] << ":";
+				str << std::dec << proxyMap->port_src << " -> 127.0.0.1:";
+				str << std::dec << proxyMap->port_dst;
+				str << std::flush;
+				DEBUG_LOGGING_NORMAL((str.str().c_str()));
+
+				pkey++;
+			}
+
 		}
 	}
 }
@@ -1435,12 +1490,17 @@ void CRoCodeBind::PacketQueueProc(char *buf,int len)
 				isReceivedGID = TRUE;
 			}else{
 				packetlength = GetPacketLength( opcode );
+				DEBUG_LOGGING_NORMAL(("packetlength orig = %d", packetlength));
 				if( packetlength == -1 ){
-					if( m_packetqueue_head < 4 )break;
-					packetlength = *(unsigned int*)m_packetqueuebuffer;
-					packetlength >>= 16;
+					// unknown, send everything through
+					DEBUG_LOGGING_NORMAL(("Unknown packet %04X", *(unsigned short*)m_packetqueuebuffer));
+					packetlength = m_packetqueue_head;
+					//if( m_packetqueue_head < 4 )break;
+					//packetlength = *(unsigned int*)m_packetqueuebuffer;
+					//packetlength >>= 16;
 				}
 			}
+			DEBUG_LOGGING_NORMAL(("head = %d, length = %d", m_packetqueue_head, packetlength));
 			if( m_packetqueue_head >= packetlength ){
 				if (isReceivedGID){
 					m_gid = *(int*)m_packetqueuebuffer;
@@ -1460,6 +1520,41 @@ void CRoCodeBind::PacketQueueProc(char *buf,int len)
 			}
 		}
 	}
+}
+
+
+sockaddr CRoCodeBind::ProxyConnectionMapping(const sockaddr *name, int namelen)
+{
+	sockaddr newsock;
+	memcpy(&newsock, name, namelen);
+
+	for (int ii = 0; ii < MAX_PROXY_SERVERS; ii++) 
+	{
+		const ProxyMap* pm = &m_proxyMaps[ii];
+
+		// exit early if no other proxy servers in config
+		if (!(*(UINT*)&pm->ip_address[0]))
+			break;
+
+		BOOL host_eq = !memcmp(&name->sa_data[2], pm->ip_address, 4);
+
+		// Network bytes are in big endian
+		BOOL upper_port_eq = !((UCHAR)name->sa_data[0] ^ ((pm->port_src & 0xff00) >> 8));
+		BOOL lower_port_eq = !((UCHAR)name->sa_data[1] ^ (pm->port_src & 0xff));
+
+		if (host_eq && upper_port_eq && lower_port_eq) {
+			newsock.sa_data[2] = 127;
+			newsock.sa_data[3] = 0;
+			newsock.sa_data[4] = 0;
+			newsock.sa_data[5] = 1;
+
+			newsock.sa_data[0] = (pm->port_dst & 0xff00) >> 8;
+			newsock.sa_data[1] = pm->port_dst & 0xff;
+			break;
+		}
+	}
+
+	return newsock;
 }
 
 intptr_t CGameActor::jobOffset = offsetof(CGameActor, CGameActor::m_job_deprecated);

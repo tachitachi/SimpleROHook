@@ -30,5 +30,6 @@ typedef struct _StSHAREDMEMORY{
 
 	WCHAR	configfilepath[MAX_PATH];
 	WCHAR	musicfilename[MAX_PATH];
+	WCHAR	proxyfilepath[MAX_PATH];
 
 }StSHAREDMEMORY;

@@ -39,6 +39,7 @@ namespace SimpleROHookCS
             public int chainload;
             public fixed char configfilepath[MAX_PATH];
             public fixed char musicfilename[MAX_PATH];
+            public fixed char proxyfilepath[MAX_PATH];
         }
 
         private MemoryMappedFile m_Mmf = null;
@@ -305,6 +306,22 @@ namespace SimpleROHookCS
                 char[] cstr = value.ToCharArray();
                 Marshal.Copy(cstr, 0, (IntPtr)m_pSharedMemory->musicfilename, cstr.Length);
                 m_pSharedMemory->musicfilename[cstr.Length] = '\0';
+            }
+        }
+
+
+        public string proxyfilepath
+        {
+            get
+            {
+                string result = new string(m_pSharedMemory->proxyfilepath);
+                return result;
+            }
+            set
+            {
+                char[] cstr = value.ToCharArray();
+                Marshal.Copy(cstr, 0, (IntPtr)m_pSharedMemory->proxyfilepath, cstr.Length);
+                m_pSharedMemory->proxyfilepath[cstr.Length] = '\0';
             }
         }
     }

@@ -9,6 +9,7 @@
 #include "Core/RoCodeBind.h"
 
 #include "versioninfo.h"
+#include <WinSock2.h>
 
 static BOOL g_useMinHook = TRUE;
 
@@ -215,7 +216,8 @@ BOOL RagexeSoundRateFixer(void)
 typedef HRESULT (WINAPI *tDirectDrawCreateEx)( GUID FAR *lpGUID, LPVOID *lplpDD, REFIID iid, IUnknown FAR *pUnkOuter );
 typedef HRESULT (WINAPI *tDirectInputCreateA)( HINSTANCE hinst, DWORD dwVersion, LPDIRECTINPUTA *ppDI, LPUNKNOWN punkOuter);
 
-typedef int (WSAAPI *tWS2_32_recv)( SOCKET s, char *buf,int len,int flags );
+typedef int (WSAAPI *tWS2_32_recv)(SOCKET s, char *buf, int len, int flags);
+typedef int (WSAAPI *tWS2_32_connect)(SOCKET s, const sockaddr *name, int namelen);
 
 
 tDirectDrawCreateEx OrigDirectDrawCreateEx = NULL;
@@ -223,14 +225,40 @@ tDirectInputCreateA OrigDirectInputCreateA = NULL;
 
 HMODULE g_ws2_32_dll = NULL;
 tWS2_32_recv OrigWS2_32_recv = NULL;
+tWS2_32_connect OrigWS2_32_connect = NULL;
 
-int WSAAPI ProxyWS2_32_recv( SOCKET s, char *buf,int len,int flags )
+int WSAAPI ProxyWS2_32_recv(SOCKET s, char *buf, int len, int flags)
 {
 	int result;
 
-	result = OrigWS2_32_recv(s,buf,len,flags);
-	if( g_pRoCodeBind )
-		g_pRoCodeBind->PacketQueueProc( buf,result );
+	result = OrigWS2_32_recv(s, buf, len, flags);
+
+	// Rely on proxy server to handle recv packets
+	//if (g_pRoCodeBind)
+	//	g_pRoCodeBind->PacketQueueProc(buf, result);
+
+	return result;
+}
+
+int WSAAPI ProxyWS2_32_connect(SOCKET s, const sockaddr *name, int namelen)
+{
+	int result;
+
+	if (g_pRoCodeBind)
+	{
+		sockaddr newsock = g_pRoCodeBind->ProxyConnectionMapping(name, namelen);
+
+		USHORT port_dst = ((USHORT)(newsock.sa_data[0] & 0xff) << 8) | (newsock.sa_data[1] & 0xff);
+
+		std::stringstream str;
+		str << "Connecting to [ " << std::dec << static_cast<unsigned>(newsock.sa_data[2] & 0xff) << "." << std::dec << static_cast<unsigned>(newsock.sa_data[3] & 0xff) << "." <<
+			std::dec << static_cast<unsigned>(newsock.sa_data[4] & 0xff) << "." << std::dec << static_cast<unsigned>(newsock.sa_data[5] & 0xff) << ":" << std::dec << (port_dst & 0xffff) << " ]";
+		DEBUG_LOGGING_NORMAL((str.str().c_str()));
+
+		result = OrigWS2_32_connect(s, (const struct sockaddr *)&newsock, namelen);
+	}
+	else
+		result = OrigWS2_32_connect(s, name, namelen);
 
 	return result;
 }
@@ -328,6 +356,9 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 			InstallProxyFunction(
 				_T("ws2_32.dll"), "recv",
 				ProxyWS2_32_recv, (LPVOID*)&OrigWS2_32_recv);
+			InstallProxyFunction(
+				_T("ws2_32.dll"), "connect",
+				ProxyWS2_32_connect, (LPVOID*)&OrigWS2_32_connect);
 #endif
 			if (g_pSharedData) {
 				::GetCurrentDirectory(MAX_PATH, temppath);

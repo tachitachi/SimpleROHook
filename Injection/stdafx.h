@@ -18,7 +18,7 @@
 
 #pragma comment(lib, "shlwapi.lib")
 #pragma comment(lib, "ddraw.lib")
-#pragma comment(lib, "dinput.lib")
+#pragma comment(lib, "dinput8.lib")
 #pragma comment(lib, "dxguid.lib")
 #pragma comment(lib, "winmm.lib")
 

@@ -721,6 +721,21 @@ void CRoCodeBind::DrawSRHDebug(IDirect3DDevice7* d3ddevice)
 		m_pSFastFont->DrawText((LPSTR)str.str().c_str(), 0, 0,D3DCOLOR_ARGB(255,255,255,255),0,NULL);
 	}
 
+	// cpu cooler
+	if (g_pSharedData->cpucoolerlevel) {
+		int level = g_pSharedData->cpucoolerlevel;
+		int CoolerLevelTable[4] = { 1,1,3,10 };
+		int ref = g_PerformanceCounter.GetMonitorRefreshRate();
+
+		if (level < 0)level = 0;
+		else if (level > 3)level = 3;
+
+		ref /= CoolerLevelTable[level];
+		if (ref) {
+			::Sleep(1000 / ref);
+		}
+	}
+
 	if( g_pSharedData->objectinformation ){
 		std::stringstream str;
 		CModeMgr *pcmode = g_pmodeMgr;

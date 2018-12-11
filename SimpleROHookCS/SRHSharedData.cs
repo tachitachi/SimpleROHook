@@ -37,6 +37,7 @@ namespace SimpleROHookCS
             public int _44khz_audiomode;
             public int cpucoolerlevel;
             public int chainload;
+            public int proxify;
             public fixed char configfilepath[MAX_PATH];
             public fixed char musicfilename[MAX_PATH];
             public fixed char proxyfilepath[MAX_PATH];
@@ -74,6 +75,7 @@ namespace SimpleROHookCS
             _44khz_audiomode = false;
             cpucoolerlevel = 0;
             chainload = true;
+            proxify = true;
             configfilepath = "";
             musicfilename = "";
             executeorder = false;
@@ -254,6 +256,17 @@ namespace SimpleROHookCS
             set
             {
                 m_pSharedMemory->chainload = (value == false) ? 0 : 1;
+            }
+        }
+        public bool proxify
+        {
+            get
+            {
+                return (m_pSharedMemory->proxify == 0) ? false : true;
+            }
+            set
+            {
+                m_pSharedMemory->proxify = (value == false) ? 0 : 1;
             }
         }
 

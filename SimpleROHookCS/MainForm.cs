@@ -117,6 +117,8 @@ namespace SimpleROHookCS
                 = m_SharedData._44khz_audiomode;
             chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem.Checked
                 = m_SharedData.chainload;
+            proxifierToolStripMenuItem.Checked
+                = m_SharedData.proxify;
 
             nPCLoggerToolStripMenuItem.Checked = m_npcLogger.Visible;
         }
@@ -684,6 +686,8 @@ Skill00FF=0x7F888888
                         = configration.cpucoolerlevel;
                     m_SharedData.chainload
                         = configration.chainload;
+                    m_SharedData.proxify
+                        = configration.proxify;
                 }
                 #endregion
             }
@@ -780,6 +784,12 @@ Skill00FF=0x7F888888
             var tsm = (ToolStripMenuItem)sender;
             m_SharedData.chainload = tsm.Checked;
         }
+
+        private void proxifierToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var tsm = (ToolStripMenuItem)sender;
+            m_SharedData.proxify = tsm.Checked;
+        }
     }
 
     public class Config
@@ -801,6 +811,7 @@ Skill00FF=0x7F888888
             _44khz_audiomode = false;
             cpucoolerlevel = 0;
             chainload = true;
+            proxify = true;
         }
 
         public bool write_packetlog { get; set; }
@@ -818,6 +829,7 @@ Skill00FF=0x7F888888
         public bool _44khz_audiomode { get; set; }
         public int cpucoolerlevel { get; set; }
         public bool chainload { get; set; }
+        public bool proxify { get; set; }
 
         // without serialize
         [System.Xml.Serialization.XmlIgnoreAttribute]

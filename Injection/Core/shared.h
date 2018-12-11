@@ -27,6 +27,7 @@ typedef struct _StSHAREDMEMORY{
 	BOOL	_44khz_audiomode;
 	int		cpucoolerlevel;
 	BOOL	chainload;
+	BOOL	proxify;
 
 	WCHAR	configfilepath[MAX_PATH];
 	WCHAR	musicfilename[MAX_PATH];

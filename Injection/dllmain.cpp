@@ -244,7 +244,7 @@ int WSAAPI ProxyWS2_32_connect(SOCKET s, const sockaddr *name, int namelen)
 {
 	int result;
 
-	if (g_pRoCodeBind)
+	if (g_pRoCodeBind && g_pSharedData && g_pSharedData->proxify)
 	{
 		sockaddr newsock = g_pRoCodeBind->ProxyConnectionMapping(name, namelen);
 

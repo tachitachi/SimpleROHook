@@ -38,6 +38,7 @@
             this.kHzAudioModeonBootToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.freeMouseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fixWindowModeVsyncWaitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nPCLoggerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debugInfomationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,7 +61,7 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutSimpleROHookToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.proxifierToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TaskTray_contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -109,7 +110,8 @@
             this.kHzAudioModeonBootToolStripMenuItem,
             this.freeMouseToolStripMenuItem,
             this.fixWindowModeVsyncWaitToolStripMenuItem,
-            this.chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem});
+            this.chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem,
+            this.proxifierToolStripMenuItem});
             this.extraToolStripMenuItem.Name = "extraToolStripMenuItem";
             this.extraToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
             this.extraToolStripMenuItem.Text = "Extra";
@@ -138,6 +140,14 @@
             this.fixWindowModeVsyncWaitToolStripMenuItem.Text = "Fix WindowMode VsyncWait";
             this.fixWindowModeVsyncWaitToolStripMenuItem.Click += new System.EventHandler(this.fixWindowModeVsyncWaitToolStripMenuItem_Click);
             // 
+            // chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem
+            // 
+            this.chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem.CheckOnClick = true;
+            this.chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem.Name = "chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem";
+            this.chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
+            this.chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem.Text = "Chainload dinput.dll/.asi for dinput-free Ragexes";
+            this.chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem.Click += new System.EventHandler(this.chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem_Click);
+            // 
             // windowToolStripMenuItem
             // 
             this.windowToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -150,7 +160,7 @@
             // 
             this.nPCLoggerToolStripMenuItem.CheckOnClick = true;
             this.nPCLoggerToolStripMenuItem.Name = "nPCLoggerToolStripMenuItem";
-            this.nPCLoggerToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.nPCLoggerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.nPCLoggerToolStripMenuItem.Text = "NPC Logger";
             this.nPCLoggerToolStripMenuItem.Click += new System.EventHandler(this.nPCLoggerToolStripMenuItem_Click);
             // 
@@ -313,13 +323,13 @@
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
-            // chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem
+            // proxifierToolStripMenuItem
             // 
-            this.chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem.CheckOnClick = true;
-            this.chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem.Name = "chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem";
-            this.chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
-            this.chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem.Text = "Chainload dinput.dll/.asi for dinput-free Ragexes";
-            this.chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem.Click += new System.EventHandler(this.chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem_Click);
+            this.proxifierToolStripMenuItem.CheckOnClick = true;
+            this.proxifierToolStripMenuItem.Name = "proxifierToolStripMenuItem";
+            this.proxifierToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
+            this.proxifierToolStripMenuItem.Text = "Proxifier";
+            this.proxifierToolStripMenuItem.Click += new System.EventHandler(this.proxifierToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -369,6 +379,7 @@
         private System.Windows.Forms.ToolStripMenuItem alphaLeveltoolStripMenuItem;
         private ToolStripTrackBar alphaLeveltoolStripTrackBar;
         private System.Windows.Forms.ToolStripMenuItem chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem proxifierToolStripMenuItem;
     }
 }
 
